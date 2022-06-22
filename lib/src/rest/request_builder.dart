@@ -71,11 +71,10 @@ class PutBuilder {
 
 class GetBuilder {
 //Same syntax as for JAX-RS meaning /rest/service/{var1}/{var2}
-  final String _url;
 
   String _interpretedURL;
 
-  GetBuilder(this._url) : _interpretedURL = _url;
+  GetBuilder(String url) : _interpretedURL = url;
 
   var _header = new Map<String, String>();
 
