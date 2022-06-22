@@ -36,6 +36,8 @@ abstract class RestAccessor {
   Future<ServiceResult> put<Input, Output>(Input input,
       {Map<String, String>? queryParams, HeaderBuilder? headerBuilder});
 
+  /// Build method used internally.
+  /// Do not use it. It will be hidden in future version.
   static RestAccessor build(
       URLFactory urlFactory, HeaderBuilder? defaultHeaderBuilder) {
     return _RestAccessorImpl(urlFactory,
