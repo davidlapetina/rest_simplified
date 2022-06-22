@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:rest_simplified/rest/beans.dart';
+import 'package:rest_simplified/beans.dart';
 
 mixin RestCallResponseManagement<T extends StatefulWidget> on State<T> {
   void handleException(Exception exception);
@@ -23,7 +23,6 @@ mixin RestCallResponseManagement<T extends StatefulWidget> on State<T> {
   void setValueOrDisplayError(Future<ServiceResult> futureServiceResult,
       Function setter, Function errorHandler,
       {var additionalParam}) {
-    //print("in setValueOrDisplayError " + setter.toString());
     futureServiceResult.then((value) => {
           _callBackSet(setter, errorHandler, value,
               additionalParam: additionalParam)

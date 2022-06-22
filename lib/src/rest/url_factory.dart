@@ -1,4 +1,4 @@
-enum Protocol { get, post, put, all }
+import 'package:rest_simplified/rest_accessor.dart';
 
 class URLFactory {
   String baseURL;

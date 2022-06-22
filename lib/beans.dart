@@ -1,12 +1,24 @@
+/// Class to be used when no response is expected.
 class NoResponseExpected {
   NoResponseExpected();
 }
 
+/// Class to manage the response from the server.
 class ServiceResult {
+  /// HTTP Code returned.
   int httpCode;
+
+  /// Exception if any.
   Exception? exception;
+
+  /// The headers returned.
+  /// Can be used to get tokens, cookies, etc
   Map<String, String> headers;
+
+  /// Enum to find easily of the response if fine or not.
   ServiceExecutionResult result;
+
+  /// The bean containing the response if any.
   var entity;
 
   bool isSuccess() {
