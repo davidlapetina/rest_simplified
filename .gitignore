@@ -1,1 +1,4 @@
 /.dart_tool/
+/rest_simplified.iml
+/pubspec.lock
+/.packages
