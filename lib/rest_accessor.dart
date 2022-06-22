@@ -6,6 +6,7 @@ import 'package:rest_simplified/parsers_factory.dart';
 import 'package:rest_simplified/src/rest/request_builder.dart';
 import 'package:rest_simplified/src/rest/url_factory.dart';
 
+/// Defines the protocols. All implies get, post, put.
 enum Protocol { get, post, put, all }
 
 /// Defines the Rest/HTTP operations.
