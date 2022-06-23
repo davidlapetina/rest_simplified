@@ -76,7 +76,7 @@ class _RestAccessorImpl extends RestAccessor {
 
     if (response.statusCode != 200) {
       return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, _decode(response));
+          response.statusCode, response.headers, response.body);
     }
 
     try {
@@ -116,7 +116,7 @@ class _RestAccessorImpl extends RestAccessor {
 
     if (response.statusCode != 200 && response.statusCode != 201) {
       return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, _decode(response));
+          response.statusCode, response.headers, response.body);
     }
 
     if (Output == NoResponseExpected) {
@@ -162,7 +162,7 @@ class _RestAccessorImpl extends RestAccessor {
 
     if (response.statusCode != 200) {
       return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, _decode(response));
+          response.statusCode, response.headers, response.body);
     }
 
     if (Output == NoResponseExpected) {
