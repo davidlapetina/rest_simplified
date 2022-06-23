@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rest_simplified/rest_simplified.dart';
 
 class PostBuilder {
   String _url;
@@ -104,10 +105,6 @@ class GetBuilder {
     Uri _uri = Uri.parse(_interpretedURL);
     return http.get(_uri, headers: _header);
   }
-}
-
-abstract class HeaderBuilder {
-  Map<String, String> get();
 }
 
 /*

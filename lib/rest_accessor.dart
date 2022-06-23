@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rest_simplified/beans.dart';
 import 'package:rest_simplified/parsers_factory.dart';
+import 'package:rest_simplified/rest_simplified.dart';
 import 'package:rest_simplified/src/rest/request_builder.dart';
 import 'package:rest_simplified/src/rest/url_factory.dart';
 

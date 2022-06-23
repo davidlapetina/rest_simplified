@@ -2,7 +2,6 @@ library rest_simplified;
 
 import 'package:rest_simplified/parsers_factory.dart';
 import 'package:rest_simplified/rest_accessor.dart';
-import 'package:rest_simplified/src/rest/request_builder.dart';
 import 'package:rest_simplified/src/rest/url_factory.dart';
 
 /// Main entry point for the API.
@@ -49,4 +48,8 @@ class RestSimplified {
   RestAccessor getRestAccessor() {
     return _restAccessor;
   }
+}
+
+abstract class HeaderBuilder {
+  Map<String, String> get();
 }
