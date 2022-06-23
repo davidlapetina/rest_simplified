@@ -104,11 +104,8 @@ class _RestAccessorImpl extends RestAccessor {
       post.setHeader(defaultHeaderBuilder!);
     }
 
-    Map<String, dynamic> parameters = parserFactory.toMap<Input>().toMap(input);
-
-    parameters.forEach((key, value) {
-      post.addFormData(key, value);
-    });
+    Map<String, dynamic> body = parserFactory.toMap<Input>().toMap(input);
+    post.setBody(body);
 
     post.setQueryParams(queryParams);
 
@@ -150,11 +147,8 @@ class _RestAccessorImpl extends RestAccessor {
       put.setHeader(defaultHeaderBuilder!);
     }
 
-    Map<String, dynamic> parameters = parserFactory.toMap<Input>().toMap(input);
-
-    parameters.forEach((key, value) {
-      put.addFormData(key, value);
-    });
+    Map<String, dynamic> body = parserFactory.toMap<Input>().toMap(input);
+    put.setBody(body);
 
     put.setQueryParams(queryParams);
 

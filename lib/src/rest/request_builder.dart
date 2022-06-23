@@ -8,14 +8,14 @@ class PostBuilder {
   PostBuilder(this._url);
 
   Map<String, String>? _header = <String, String>{};
-  final Map<String, dynamic> _body = <String, dynamic>{};
+  Map<String, dynamic> _body = <String, dynamic>{};
 
   void setHeader(HeaderBuilder headerBuilder) {
     _header = headerBuilder.get();
   }
 
-  void addFormData(String key, var value) {
-    _body[key] = value;
+  void setBody(Map<String, dynamic> body) {
+    this._body = body;
   }
 
   void setQueryParams(Map<String, String>? queryParams) {
@@ -42,14 +42,14 @@ class PutBuilder {
   PutBuilder(this._url);
 
   Map<String, String>? _header = <String, String>{};
-  final Map<String, dynamic> _body = <String, dynamic>{};
+  Map<String, dynamic> _body = <String, dynamic>{};
 
   void setHeader(HeaderBuilder headerBuilder) {
     _header = headerBuilder.get();
   }
 
-  void addFormData(String key, var value) {
-    _body[key] = value;
+  void setBody(Map<String, dynamic> body) {
+    this._body = body;
   }
 
   void setQueryParams(Map<String, String>? queryParams) {
