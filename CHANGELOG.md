@@ -1,5 +1,9 @@
 # 0.0.4+3
 
+* Fix bug when serializing POST and PUT
+
+# 0.0.4+3
+
 * Fix again the layout of the example.md
 
 # 0.0.4+2
