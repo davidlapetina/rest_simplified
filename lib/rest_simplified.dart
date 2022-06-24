@@ -14,7 +14,7 @@ class RestSimplified {
   /// Factory to setup the library.
   /// It is possible to define a [HeaderBuilder] that can be used for each request. In case the HeaderBuilder
   /// is not provided then you can define it when accessing to each request (see RestAccessor)
-  /// [baseURL] is used to build the full URL, See [addURL]
+  /// [baseURL] is used to build the full URL, See [addPath]
   factory RestSimplified.build(String baseURL,
       {HeaderBuilder? defaultHeaderBuilder}) {
     return RestSimplified._(URLFactory(baseURL), defaultHeaderBuilder);
@@ -22,11 +22,11 @@ class RestSimplified {
 
   /// This method is used to map URL with a Bean that is sent to the server and a protocol.
   /// For instance:
-  /// addURL<Car>(Protocol.get, '/myCar')
-  /// addURL<Car>(Protocol.post, '/createCar')
-  /// addURL<Customer>(Protocol.get, '/customer/{customerId}') see [RestAccessor] for the interpretation of {customerId} parameter
-  void addURL<T>(Protocol protocol, String path) {
-    _urlFactory.addURL<T>(protocol, path);
+  /// addPath<Car>(Protocol.get, '/myCar')
+  /// addPath<Car>(Protocol.post, '/createCar')
+  /// addPath<Customer>(Protocol.get, '/customer/{customerId}') see [RestAccessor] for the interpretation of {customerId} parameter
+  void addPath<T>(Method protocol, String path) {
+    _urlFactory.addPath<T>(protocol, path);
   }
 
   /// In order to serialize a bean to Json format you need to add a [ToJsonMapParser].

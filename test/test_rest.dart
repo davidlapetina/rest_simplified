@@ -8,7 +8,7 @@ void main() {
   test('Should not fail', () async {
     RestSimplified rs = RestSimplified.build('https://catfact.ninja');
     rs.addFromJsonMapParser<CatFact>(CatFactJsonMapper());
-    rs.addURL<CatFact>(Protocol.get, '/fact');
+    rs.addPath<CatFact>(Method.get, '/fact');
 
     ServiceResult result = await rs.getRestAccessor().get<CatFact>();
     expect(result.httpCode, 200);

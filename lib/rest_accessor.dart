@@ -8,11 +8,21 @@ import 'package:rest_simplified/src/rest/request_builder.dart';
 import 'package:rest_simplified/src/rest/url_factory.dart';
 
 /// Defines the protocols. All implies get, post, put.
-enum Protocol { get, post, put, all }
+enum Method { delete, get, patch, post, put, all }
 
 /// Defines the Rest/HTTP operations.
 abstract class RestAccessor {
   final ParserFactory parserFactory = ParserFactory();
+
+  /// For Rest/ DELETE operation.
+  /// [queryParams] will add the parameters as a query url/?key1=value1&key2=value2...
+  /// [pathParams] will transform any value such as {key} in a url, for instance if the URL defined is '/customer/{customerId}'
+  /// then any key/value in the map such as pathParams[customerId]='123456' will be transformed as '/customer/123456'
+  /// It is possible to define a specific [HeaderBuilder]
+  Future<ServiceResult> delete<Output>(
+      {Map<String, String>? queryParams,
+      Map<String, String>? pathParams,
+      HeaderBuilder? headerBuilder});
 
   /// For Rest/ GET operation.
   /// [queryParams] will add the parameters as a query url/?key1=value1&key2=value2...
@@ -23,6 +33,13 @@ abstract class RestAccessor {
       {Map<String, String>? queryParams,
       Map<String, String>? pathParams,
       HeaderBuilder? headerBuilder});
+
+  /// For Rest/ PATCH operation.
+  /// When doing PATCH you have to define the return type expected, even if it is the same as Input
+  /// In case no return value is expected, you must use [NoResponseExpected], for instance: put<Car,NoResponseExpected>(myCar);
+  /// It is possible to define a specific [HeaderBuilder]
+  Future<ServiceResult> patch<Input, Output>(Input input,
+      {Map<String, String>? queryParams, HeaderBuilder? headerBuilder});
 
   /// For Rest/ POST operation.
   /// When doing POST you have to define the return type expected, even if it is the same as Input
@@ -53,11 +70,54 @@ class _RestAccessorImpl extends RestAccessor {
 
   _RestAccessorImpl(this._urlFactory, {this.defaultHeaderBuilder});
 
+  Future<ServiceResult> delete<Output>(
+      {Map<String, String>? queryParams,
+      Map<String, String>? pathParams,
+      HeaderBuilder? headerBuilder}) async {
+    DeleteBuilder delete =
+        DeleteBuilder(_urlFactory.getURL<Output>(Method.get));
+
+    if (headerBuilder != null) {
+      delete.setHeader(headerBuilder);
+    } else if (defaultHeaderBuilder != null) {
+      delete.setHeader(defaultHeaderBuilder!);
+    }
+
+    if (pathParams != null) {
+      pathParams.forEach((key, value) {
+        delete.setURLParam(key, value);
+      });
+    }
+
+    delete.setQueryParams(queryParams);
+
+    final http.Response response = await delete.delete();
+
+    if (response.statusCode != 200) {
+      return ServiceResult.onHttpAccessError(
+          response.statusCode, response.headers, response.body);
+    }
+
+    try {
+      dynamic json = _decode(response);
+      if (json is List) {
+        return ServiceResult.onSuccess(response.statusCode, response.headers,
+            parserFactory.fromJSON<Output>().toList(json));
+      }
+
+      return ServiceResult.onSuccess(response.statusCode, response.headers,
+          parserFactory.fromJSON<Output>().toObject(json));
+    } catch (_) {
+      return ServiceResult.onParsingFailure(response.statusCode,
+          response.headers, response.body, ParsingException(_));
+    }
+  }
+
   Future<ServiceResult> get<Output>(
       {Map<String, String>? queryParams,
       Map<String, String>? pathParams,
       HeaderBuilder? headerBuilder}) async {
-    GetBuilder get = GetBuilder(_urlFactory.getURL<Output>(Protocol.get));
+    GetBuilder get = GetBuilder(_urlFactory.getURL<Output>(Method.get));
 
     if (headerBuilder != null) {
       get.setHeader(headerBuilder);
@@ -95,9 +155,52 @@ class _RestAccessorImpl extends RestAccessor {
     }
   }
 
+  Future<ServiceResult> patch<Input, Output>(Input input,
+      {Map<String, String>? queryParams, HeaderBuilder? headerBuilder}) async {
+    PatchBuilder patch = PatchBuilder(_urlFactory.getURL<Input>(Method.patch));
+
+    if (headerBuilder != null) {
+      patch.setHeader(headerBuilder);
+    } else if (defaultHeaderBuilder != null) {
+      patch.setHeader(defaultHeaderBuilder!);
+    }
+
+    Map<String, dynamic> body = parserFactory.toMap<Input>().toMap(input);
+    patch.setBody(body);
+
+    patch.setQueryParams(queryParams);
+
+    final http.Response response = await patch.patch();
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      return ServiceResult.onHttpAccessError(
+          response.statusCode, response.headers, response.body);
+    }
+
+    if (Output == NoResponseExpected) {
+      //Nothing to expect
+      return ServiceResult.onSuccessWithNoEntity(
+          response.statusCode, response.headers);
+    }
+
+    try {
+      dynamic json = _decode(response);
+      if (json is List) {
+        return ServiceResult.onSuccess(response.statusCode, response.headers,
+            parserFactory.fromJSON<Output>().toList(json));
+      }
+
+      return ServiceResult.onSuccess(response.statusCode, response.headers,
+          parserFactory.fromJSON<Output>().toObject(json));
+    } catch (_) {
+      return ServiceResult.onParsingFailure(response.statusCode,
+          response.headers, response.body, ParsingException(_));
+    }
+  }
+
   Future<ServiceResult> post<Input, Output>(Input input,
       {Map<String, String>? queryParams, HeaderBuilder? headerBuilder}) async {
-    PostBuilder post = PostBuilder(_urlFactory.getURL<Input>(Protocol.post));
+    PostBuilder post = PostBuilder(_urlFactory.getURL<Input>(Method.post));
 
     if (headerBuilder != null) {
       post.setHeader(headerBuilder);
@@ -140,7 +243,7 @@ class _RestAccessorImpl extends RestAccessor {
 
   Future<ServiceResult> put<Input, Output>(Input input,
       {Map<String, String>? queryParams, HeaderBuilder? headerBuilder}) async {
-    PutBuilder put = PutBuilder(_urlFactory.getURL<Input>(Protocol.put));
+    PutBuilder put = PutBuilder(_urlFactory.getURL<Input>(Method.put));
 
     if (headerBuilder != null) {
       put.setHeader(headerBuilder);

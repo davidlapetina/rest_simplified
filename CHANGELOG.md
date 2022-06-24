@@ -1,3 +1,14 @@
+# 0.0.6
+
+* Add DELETE / PATCH methods
+* Rename addURL into addPath
+* Rename Protocol into Method
+* Add more complete example
+
+# 0.0.5
+
+* Fix minor bugs
+
 # 0.0.4+3
 
 * Fix bug when serializing POST and PUT
