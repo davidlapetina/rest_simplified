@@ -99,18 +99,40 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     try {
-      dynamic json = _decode(response);
-      if (json is List) {
-        return ServiceResult.onSuccess(response.statusCode, response.headers,
-            parserFactory.fromJSON<Output>().toList(json));
-      }
-
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toObject(json));
+      return _extractEntity<Output>(response);
     } catch (_) {
       return ServiceResult.onParsingFailure(response.statusCode,
           response.headers, response.body, ParsingException(_));
     }
+  }
+
+  ServiceResult _extractEntity<Output>(http.Response response) {
+
+    dynamic json = _decode(response);
+
+    if (Output == String) {
+      return ServiceResult.onSuccess(response.statusCode, response.headers,json.toString());
+    }
+
+    if (Output == bool) {
+      return ServiceResult.onSuccess(response.statusCode, response.headers, json.toString().toLowerCase() == ' true');
+    }
+
+    if (Output == int) {
+      return ServiceResult.onSuccess(response.statusCode, response.headers, int.parse(json));
+    }
+
+    if (Output == double) {
+      return ServiceResult.onSuccess(response.statusCode, response.headers, double.parse(json));
+    }
+
+    if (json is List) {
+      return ServiceResult.onSuccess(response.statusCode, response.headers,
+          parserFactory.fromJSON<Output>().toList(json));
+    }
+
+    return ServiceResult.onSuccess(response.statusCode, response.headers,
+        parserFactory.fromJSON<Output>().toObject(json));
   }
 
   Future<ServiceResult> get<Output>(
@@ -141,14 +163,7 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     try {
-      dynamic json = _decode(response);
-      if (json is List) {
-        return ServiceResult.onSuccess(response.statusCode, response.headers,
-            parserFactory.fromJSON<Output>().toList(json));
-      }
-
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toObject(json));
+      return _extractEntity<Output>(response);
     } catch (_) {
       return ServiceResult.onParsingFailure(response.statusCode,
           response.headers, response.body, ParsingException(_));
@@ -184,14 +199,7 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     try {
-      dynamic json = _decode(response);
-      if (json is List) {
-        return ServiceResult.onSuccess(response.statusCode, response.headers,
-            parserFactory.fromJSON<Output>().toList(json));
-      }
-
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toObject(json));
+      return _extractEntity<Output>(response);
     } catch (_) {
       return ServiceResult.onParsingFailure(response.statusCode,
           response.headers, response.body, ParsingException(_));
@@ -227,14 +235,7 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     try {
-      dynamic json = _decode(response);
-      if (json is List) {
-        return ServiceResult.onSuccess(response.statusCode, response.headers,
-            parserFactory.fromJSON<Output>().toList(json));
-      }
-
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toObject(json));
+      return _extractEntity<Output>(response);
     } catch (_) {
       return ServiceResult.onParsingFailure(response.statusCode,
           response.headers, response.body, ParsingException(_));
@@ -270,14 +271,7 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     try {
-      dynamic json = _decode(response);
-      if (json is List) {
-        return ServiceResult.onSuccess(response.statusCode, response.headers,
-            parserFactory.fromJSON<Output>().toList(json));
-      }
-
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toObject(json));
+      return _extractEntity<Output>(response);
     } catch (_) {
       return ServiceResult.onParsingFailure(response.statusCode,
           response.headers, response.body, ParsingException(_));
