@@ -107,23 +107,26 @@ class _RestAccessorImpl extends RestAccessor {
   }
 
   ServiceResult _extractEntity<Output>(http.Response response) {
-
     dynamic json = _decode(response);
 
     if (Output == String) {
-      return ServiceResult.onSuccess(response.statusCode, response.headers,json.toString());
+      return ServiceResult.onSuccess(
+          response.statusCode, response.headers, json.toString());
     }
 
     if (Output == bool) {
-      return ServiceResult.onSuccess(response.statusCode, response.headers, json.toString().toLowerCase() == ' true');
+      return ServiceResult.onSuccess(response.statusCode, response.headers,
+          json.toString().toLowerCase() == ' true');
     }
 
     if (Output == int) {
-      return ServiceResult.onSuccess(response.statusCode, response.headers, int.parse(json));
+      return ServiceResult.onSuccess(
+          response.statusCode, response.headers, int.parse(json));
     }
 
     if (Output == double) {
-      return ServiceResult.onSuccess(response.statusCode, response.headers, double.parse(json));
+      return ServiceResult.onSuccess(
+          response.statusCode, response.headers, double.parse(json));
     }
 
     if (json is List) {

@@ -18,6 +18,16 @@ void main() {
     expect(catFact.fact!.length, catFact.length);
     print(catFact.fact);
   });
+
+  test('Get simple string', () async {
+    RestSimplified rs = RestSimplified.build('https://catfact.ninja');
+    rs.addPath<String>(Method.get, '/fact');
+
+    ServiceResult result = await rs.getRestAccessor().get<String>();
+    expect(result.httpCode, 200);
+
+    print(result.entity);
+  });
 }
 
 class CatFact {
