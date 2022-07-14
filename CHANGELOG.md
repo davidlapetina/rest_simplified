@@ -1,3 +1,7 @@
+# 0.0.7
+
+* Add automatic parsing when exepcting output as String, int, double, bool
+
 # 0.0.6
 
 * Add DELETE / PATCH methods
