@@ -2,6 +2,7 @@ import 'package:rest_simplified/rest_accessor.dart';
 
 class URLFactory {
   String baseURL;
+
   URLFactory(this.baseURL);
 
   Map<dynamic, String> getPaths = <dynamic, String>{};
@@ -61,6 +62,10 @@ class URLFactory {
     }
 
     if (path == null) throw Exception("Should not be here");
+    return baseURL + path;
+  }
+
+  String getRawURL(String path) {
     return baseURL + path;
   }
 }

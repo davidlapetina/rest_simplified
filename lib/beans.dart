@@ -87,5 +87,6 @@ enum ServiceExecutionResult {
 
 class ParsingException implements Exception {
   final Object rootCause;
+
   ParsingException(this.rootCause);
 }

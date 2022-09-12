@@ -1,11 +1,12 @@
 /// Implement this class to transform an object to a map that will be serialized in Json.
 abstract class ToJsonMapParser<T> {
-  Map<String, String> toMap(T t);
+  Map<String, dynamic> toMap(T t);
 }
 
 /// Implements this class to transform a map deserialized from Json into an object.
 abstract class FromJsonParser<T> {
   T toObject(Map<String, dynamic> json);
+
   List<T> toList(dynamic json) {
     List<T> results = json.map((item) => toObject(item)).toList();
     return results;

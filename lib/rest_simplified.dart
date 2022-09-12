@@ -8,6 +8,7 @@ import 'package:rest_simplified/src/rest/url_factory.dart';
 class RestSimplified {
   URLFactory _urlFactory;
   RestAccessor _restAccessor;
+
   RestSimplified._(this._urlFactory, HeaderBuilder? defaultHeaderBuilder)
       : _restAccessor = RestAccessor.build(_urlFactory, defaultHeaderBuilder);
 
