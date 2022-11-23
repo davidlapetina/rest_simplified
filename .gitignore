@@ -4,3 +4,5 @@
 /.packages
 /.idea/
 /doc/
+/build/test_cache/
+/build/unit_test_assets/

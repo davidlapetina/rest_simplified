@@ -1,3 +1,7 @@
+# 0.0.10
+* Fix bug in delete
+* Fix documentation
+
 # 0.0.9
 * Add a generic method 'service' to post anything anyhow
 * Fix the return type of the bean to json parser to return Map<String, dynamic>

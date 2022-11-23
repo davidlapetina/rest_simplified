@@ -79,8 +79,8 @@ class RestFactory {
     // - restSimplified.addPath<UserDTO>(Protocol.get, '/users/whoami/');
     // - otherRestSimplified.addPath<UserDTO>(Protocol.get, '/users/myinformation/');
     // Not that when doing post/put the return type can change even if it should not happen
-    rest.addPath<SigninDTO>(Protocol.post, '/users/signin');
-    rest.addPath<UserDTO>(Protocol.get, '/users/whoami/');
+    rest.addPath<SigninDTO>(Method.post, '/users/signin');
+    rest.addPath<UserDTO>(Method.get, '/users/whoami/');
   }
 }
 

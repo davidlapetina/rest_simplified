@@ -79,7 +79,7 @@ class _RestAccessorImpl extends RestAccessor {
       Map<String, String>? pathParams,
       HeaderBuilder? headerBuilder}) async {
     DeleteBuilder delete =
-        DeleteBuilder(_urlFactory.getURL<Output>(Method.get));
+        DeleteBuilder(_urlFactory.getURL<Output>(Method.delete));
 
     if (headerBuilder != null) {
       delete.setHeader(headerBuilder);
