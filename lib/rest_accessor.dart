@@ -299,16 +299,16 @@ class _RestAccessorImpl extends RestAccessor {
         build = DeleteBuilder(_urlFactory.getRawURL(path));
         break;
       case Method.patch:
-        build = DeleteBuilder(_urlFactory.getRawURL(path));
+        build = PatchBuilder(_urlFactory.getRawURL(path));
         break;
       case Method.post:
-        build = DeleteBuilder(_urlFactory.getRawURL(path));
+        build = PostBuilder(_urlFactory.getRawURL(path));
         break;
       case Method.put:
-        build = DeleteBuilder(_urlFactory.getRawURL(path));
+        build = PutBuilder(_urlFactory.getRawURL(path));
         break;
       case Method.get:
-        build = DeleteBuilder(_urlFactory.getRawURL(path));
+        build = GetBuilder(_urlFactory.getRawURL(path));
         break;
       default:
         throw Exception('Should not be here');

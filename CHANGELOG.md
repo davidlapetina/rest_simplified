@@ -1,3 +1,6 @@
+# 0.0.11
+* Fix bug in new method .service
+
 # 0.0.10
 * Fix bug in delete
 * Fix documentation
