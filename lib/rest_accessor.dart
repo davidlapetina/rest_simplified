@@ -120,7 +120,7 @@ class _RestAccessorImpl extends RestAccessor {
 
     if (Output == bool) {
       return ServiceResult.onSuccess(response.statusCode, response.headers,
-          json.toString().toLowerCase() == ' true');
+          json.toString().toLowerCase() == 'true');
     }
 
     if (Output == int) {

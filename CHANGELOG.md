@@ -1,3 +1,6 @@
+# 0.0.12
+* Fix bug when return value of a service is a boolean
+
 # 0.0.11
 * Fix bug in new method .service
 
