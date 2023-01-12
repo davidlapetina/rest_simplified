@@ -1,3 +1,7 @@
+# 0.0.13
+* Improve exception management
+* Take into account http 204 to return null
+
 # 0.0.12
 * Fix bug when return value of a service is a boolean
 

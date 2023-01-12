@@ -95,18 +95,23 @@ class _RestAccessorImpl extends RestAccessor {
 
     delete.setQueryParams(queryParams);
 
-    final http.Response response = await delete.delete();
-
-    if (response.statusCode != 200) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await delete.delete();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 
@@ -161,19 +166,29 @@ class _RestAccessorImpl extends RestAccessor {
     }
 
     get.setQueryParams(queryParams);
-
-    final http.Response response = await get.get();
-
-    if (response.statusCode != 200) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await get.get();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected || response.statusCode == 204) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 
@@ -191,25 +206,29 @@ class _RestAccessorImpl extends RestAccessor {
     patch.setBody(body);
 
     patch.setQueryParams(queryParams);
-
-    final http.Response response = await patch.patch();
-
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
-    if (Output == NoResponseExpected) {
-      //Nothing to expect
-      return ServiceResult.onSuccessWithNoEntity(
-          response.statusCode, response.headers);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await patch.patch();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected || response.statusCode == 204) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 
@@ -227,25 +246,29 @@ class _RestAccessorImpl extends RestAccessor {
     post.setBody(body);
 
     post.setQueryParams(queryParams);
-
-    final http.Response response = await post.post();
-
-    if (response.statusCode != 200 && response.statusCode != 201) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
-    if (Output == NoResponseExpected) {
-      //Nothing to expect
-      return ServiceResult.onSuccessWithNoEntity(
-          response.statusCode, response.headers);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await post.post();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected || response.statusCode == 204) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 
@@ -263,25 +286,29 @@ class _RestAccessorImpl extends RestAccessor {
     put.setBody(body);
 
     put.setQueryParams(queryParams);
-
-    final http.Response response = await put.put();
-
-    if (response.statusCode != 200) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
-    if (Output == NoResponseExpected) {
-      //Nothing to expect
-      return ServiceResult.onSuccessWithNoEntity(
-          response.statusCode, response.headers);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await put.put();
+
+      if (response.statusCode != 200) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected || response.statusCode == 204) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 
@@ -322,25 +349,29 @@ class _RestAccessorImpl extends RestAccessor {
     build.setBody(input);
 
     build.setQueryParams(queryParams);
-
-    final http.Response response = await build.execute();
-
-    if (response.statusCode != 200) {
-      return ServiceResult.onHttpAccessError(
-          response.statusCode, response.headers, response.body);
-    }
-
-    if (Output == NoResponseExpected) {
-      //Nothing to expect
-      return ServiceResult.onSuccessWithNoEntity(
-          response.statusCode, response.headers);
-    }
-
     try {
-      return _extractEntity<Output>(response);
+      final http.Response response = await build.execute();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
     } catch (_) {
-      return ServiceResult.onParsingFailure(response.statusCode,
-          response.headers, response.body, ParsingException(_));
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
     }
   }
 }
