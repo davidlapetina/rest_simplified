@@ -1,3 +1,6 @@
+# 0.0.14
+* Upgrade http dependency to http 1.1.0
+
 # 0.0.13
 * Improve exception management
 * Take into account http 204 to return null
