@@ -59,6 +59,10 @@ abstract class RestAccessor {
       Method method, String path, Map<String, dynamic> input,
       {Map<String, String>? queryParams, HeaderBuilder? headerBuilder});
 
+  Future<ServiceResult> serviceAnyBody<Output>(
+      Method method, String path, dynamic input,
+      {Map<String, String>? queryParams, HeaderBuilder? headerBuilder});
+
   /// Build method used internally.
   /// Do not use it. It will be hidden in future version.
   static RestAccessor build(
@@ -319,6 +323,65 @@ class _RestAccessorImpl extends RestAccessor {
   @override
   Future<ServiceResult> service<Output>(
       Method method, String path, Map<String, dynamic> input,
+      {Map<String, String>? queryParams, HeaderBuilder? headerBuilder}) async {
+    MethodBuilder build;
+    switch (method) {
+      case Method.delete:
+        build = DeleteBuilder(_urlFactory.getRawURL(path));
+        break;
+      case Method.patch:
+        build = PatchBuilder(_urlFactory.getRawURL(path));
+        break;
+      case Method.post:
+        build = PostBuilder(_urlFactory.getRawURL(path));
+        break;
+      case Method.put:
+        build = PutBuilder(_urlFactory.getRawURL(path));
+        break;
+      case Method.get:
+        build = GetBuilder(_urlFactory.getRawURL(path));
+        break;
+      default:
+        throw Exception('Should not be here');
+    }
+    if (headerBuilder != null) {
+      build.setHeader(headerBuilder);
+    } else if (defaultHeaderBuilder != null) {
+      build.setHeader(defaultHeaderBuilder!);
+    }
+
+    build.setBody(input);
+
+    build.setQueryParams(queryParams);
+    try {
+      final http.Response response = await build.execute();
+
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        return ServiceResult.onHttpAccessError(
+            response.statusCode, response.headers, response.body);
+      }
+
+      if (Output == NoResponseExpected) {
+        //Nothing to expect
+        return ServiceResult.onSuccessWithNoEntity(
+            response.statusCode, response.headers);
+      }
+
+      try {
+        return _extractEntity<Output>(response);
+      } catch (_) {
+        return ServiceResult.onParsingFailure(response.statusCode,
+            response.headers, response.body, ParsingException(_));
+      }
+    } catch (_) {
+      //Network issue or any low level error here
+      return ServiceResult.onInternalError('internal.error');
+    }
+  }
+
+  @override
+  Future<ServiceResult> serviceAnyBody<Output>(
+      Method method, String path, dynamic input,
       {Map<String, String>? queryParams, HeaderBuilder? headerBuilder}) async {
     MethodBuilder build;
     switch (method) {

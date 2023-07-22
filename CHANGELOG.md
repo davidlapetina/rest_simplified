@@ -1,3 +1,6 @@
+# 0.0.15
+* Add method serviceAnyBody to serialize any kind of body
+
 # 0.0.14
 * Upgrade http dependency to http 1.1.0
 
