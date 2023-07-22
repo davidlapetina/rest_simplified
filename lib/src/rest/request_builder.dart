@@ -6,7 +6,7 @@ import 'package:rest_simplified/rest_simplified.dart';
 abstract class MethodBuilder {
   void setHeader(HeaderBuilder headerBuilder);
 
-  void setBody(Map<String, dynamic> body);
+  void setBody(dynamic body);
 
   void setQueryParams(Map<String, String>? queryParams);
 
@@ -19,13 +19,13 @@ class PostBuilder implements MethodBuilder {
   PostBuilder(this._url);
 
   Map<String, String>? _header = <String, String>{};
-  Map<String, dynamic> _body = <String, dynamic>{};
+  dynamic _body;
 
   void setHeader(HeaderBuilder headerBuilder) {
     _header = headerBuilder.get();
   }
 
-  void setBody(Map<String, dynamic> body) {
+  void setBody(dynamic body) {
     this._body = body;
   }
 
@@ -58,13 +58,13 @@ class PatchBuilder implements MethodBuilder {
   PatchBuilder(this._url);
 
   Map<String, String>? _header = <String, String>{};
-  Map<String, dynamic> _body = <String, dynamic>{};
+  dynamic _body;
 
   void setHeader(HeaderBuilder headerBuilder) {
     _header = headerBuilder.get();
   }
 
-  void setBody(Map<String, dynamic> body) {
+  void setBody(dynamic body) {
     this._body = body;
   }
 
@@ -97,13 +97,13 @@ class PutBuilder implements MethodBuilder {
   PutBuilder(this._url);
 
   Map<String, String>? _header = <String, String>{};
-  Map<String, dynamic> _body = <String, dynamic>{};
+  dynamic _body;
 
   void setHeader(HeaderBuilder headerBuilder) {
     _header = headerBuilder.get();
   }
 
-  void setBody(Map<String, dynamic> body) {
+  void setBody(dynamic body) {
     this._body = body;
   }
 
@@ -143,7 +143,7 @@ class GetBuilder implements MethodBuilder {
   }
 
   @override
-  void setBody(Map<String, dynamic> body) {
+  void setBody(dynamic body) {
     // Do nothing
   }
 
@@ -216,7 +216,7 @@ class DeleteBuilder implements MethodBuilder {
   }
 
   @override
-  void setBody(Map<String, dynamic> body) {
+  void setBody(dynamic body) {
     // Do nothing
   }
 }

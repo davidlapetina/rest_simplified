@@ -1,3 +1,6 @@
+# 0.0.16
+* Fix bug after adding method serviceAnyBody to serialize any kind of body
+
 # 0.0.15
 * Add method serviceAnyBody to serialize any kind of body
 
