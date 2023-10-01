@@ -1,6 +1,6 @@
 name: rest_simplified
 description: A Simplified Rest approach for Flutter. The concept of this package is to easily map json to bean and vice-versa.
-version: 0.0.16
+version: 0.0.17
 homepage: https://github.com/davidlapetina/rest_simplified
 
 environment:

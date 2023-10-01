@@ -1,3 +1,6 @@
+# 0.0.17
+* Fix bug to parse List before parsing primitive types
+
 # 0.0.16
 * Fix bug after adding method serviceAnyBody to serialize any kind of body
 

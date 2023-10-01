@@ -122,6 +122,30 @@ class _RestAccessorImpl extends RestAccessor {
   ServiceResult _extractEntity<Output>(http.Response response) {
     dynamic json = _decode(response);
 
+    if (json is List) {
+      if (Output == String || Output == bool || Output == int || Output == double) {
+        List<Output> values = [];
+        for (dynamic item in json) {
+          if (Output == String) {
+            values.add(item.toString() as Output);
+          } else if (Output == bool) {
+            values.add((json.toString().toLowerCase() == 'true') as Output);
+          } else if (Output == int) {
+            values.add(int.parse(item) as Output);
+          } else if (Output == double) {
+            values.add(double.parse(item) as Output);
+          }
+        }
+        return ServiceResult.onSuccess(
+            response.statusCode,
+            response.headers,
+            values);
+      }
+
+      return ServiceResult.onSuccess(response.statusCode, response.headers,
+          parserFactory.fromJSON<Output>().toList(json));
+    }
+
     if (Output == String) {
       return ServiceResult.onSuccess(
           response.statusCode, response.headers, json.toString());
@@ -140,11 +164,6 @@ class _RestAccessorImpl extends RestAccessor {
     if (Output == double) {
       return ServiceResult.onSuccess(
           response.statusCode, response.headers, double.parse(json));
-    }
-
-    if (json is List) {
-      return ServiceResult.onSuccess(response.statusCode, response.headers,
-          parserFactory.fromJSON<Output>().toList(json));
     }
 
     return ServiceResult.onSuccess(response.statusCode, response.headers,
